@@ -13,3 +13,5 @@ deps/*
 
 package-lock.json
 .vscode
+.pnpm-store
+pnpm-lock.yaml

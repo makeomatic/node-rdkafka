@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+set -e
 
 # This file is intended to be run on unix systems to configure librdkafka
 # inside the submodules
@@ -6,7 +8,7 @@
 # This does not get run on windows which uses the build in solutions file
 
 # Get script directory
-scriptdir=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
+scriptdir=$(cd "$( dirname "${0}" )" && pwd)
 
 pushd ./deps/librdkafka &> /dev/null
 

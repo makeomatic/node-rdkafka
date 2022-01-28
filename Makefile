@@ -15,7 +15,7 @@ CPPLINT ?= cpplint.py
 BUILDTYPE ?= Release
 TESTS = "test/**/*.js"
 E2E_TESTS = $(wildcard e2e/*.spec.js)
-TEST_REPORTER =
+TEST_REPORTER = --reporter spec --verbose
 TEST_OUTPUT =
 CONFIG_OUTPUTS = \
   build/bindings.target.mk \
@@ -57,13 +57,13 @@ $(CONFIG_OUTPUTS): node_modules/.dirstamp binding.gyp
 	@$(NODE-GYP) configure
 
 test: node_modules/.dirstamp
-	@./node_modules/.bin/mocha $(TEST_REPORTER) $(TESTS) $(TEST_OUTPUT)
+	./node_modules/.bin/mocha --config ./test/.mocharc.json $(TEST_REPORTER) $(TESTS) $(TEST_OUTPUT)
 
 check: node_modules/.dirstamp
 	@$(NODE) util/test-compile.js
 
 e2e: $(E2E_TESTS)
-	@./node_modules/.bin/mocha --exit --timeout 120000 $(TEST_REPORTER) $(E2E_TESTS) $(TEST_OUTPUT)
+	./node_modules/.bin/mocha --exit --timeout 120000 $(TEST_REPORTER) $(E2E_TESTS) $(TEST_OUTPUT)
 
 define release
 	NEXT_VERSION=$(shell node -pe 'require("semver").inc("$(VERSION)", "$(1)")')
