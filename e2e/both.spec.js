@@ -135,7 +135,6 @@ describe('Consumer/Producer', function() {
             ct = setTimeout(consumeOne, 100);
             return;
           } else if (!messages || messages.length === 0 || (err && err.code === -191)) {
-            console.error(err, warning);
             producer.produce(topic, null, buffer, null);
             ct = setTimeout(consumeOne, 100);
             return;
