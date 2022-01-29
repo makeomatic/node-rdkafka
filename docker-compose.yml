@@ -37,6 +37,7 @@ services:
     volumes:
       - ${PWD}:/src
       - ${PWD}/ci/npmrc:/usr/local/etc/npmrc:ro
+      - ${PNPM_STORE:-~/.pnpm-store}:/tmp/.pnpm-store
     command: tail -f /dev/null
     user: "${UID:-1000}:${UID:-1000}"
     network_mode: host
