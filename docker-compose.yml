@@ -36,9 +36,8 @@ services:
       - kafka
     volumes:
       - ${PWD}:/src
-      - ~/.pnpm-store:/src/.pnpm-store:ro
-    command: tail -f /dev/null
-    user: node
+    command: /bin/sh -c "pnpm config set store-dir=/tmp/.pnpm-store && tail -f /dev/null"
+    user: "${UID:-1000}:${UID:-1000}"
     network_mode: host
     env_file:
       - .env

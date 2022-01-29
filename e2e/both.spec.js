@@ -134,10 +134,8 @@ describe('Consumer/Producer', function() {
           if (err && err.code === -185) {
             ct = setTimeout(consumeOne, 100);
             return;
-          } else if (warning) {
-            ct = setTimeout(consumeOne, 100);
-            return;
-          } else if (messages.length === 0 || (err && err.code === -191)) {
+          } else if (!messages || messages.length === 0 || (err && err.code === -191)) {
+            console.error(err, warning);
             producer.produce(topic, null, buffer, null);
             ct = setTimeout(consumeOne, 100);
             return;

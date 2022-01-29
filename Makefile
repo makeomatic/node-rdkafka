@@ -51,7 +51,7 @@ lib: node_modules/.dirstamp $(CONFIG_OUTPUTS)
 	@PYTHONHTTPSVERIFY=0 $(NODE-GYP) build $(GYPBUILDARGS)
 
 node_modules/.dirstamp: package.json
-	@$(NODE-MANAGER) update --loglevel warn
+	@$(NODE-MANAGER) i --loglevel warn
 	@touch $@
 
 $(CONFIG_OUTPUTS): node_modules/.dirstamp binding.gyp
