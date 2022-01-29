@@ -37,9 +37,8 @@ blocks:
           - touch .env
           - docker-compose up -d
           - docker-compose exec tester pnpm binary:build
-          - pnpm i
-          - pnpm test
-          - pnpm test:e2e
+          - docker-compose exec tester pnpm test
+          - docker-compose exec tester pnpm test:e2e
   - name: publish
     dependencies: ["test"]
     task:

@@ -1,4 +1,5 @@
-NODE-GYP ?= node_modules/.bin/node-gyp
+NODE-GYP ?= node_modules/.bin/node-pre-gyp
+NODE-MANAGER ?= pnpm
 
 # Sick of changing this. Do a check and try to use python 2 if it doesn't work
 PYTHON_VERSION_FULL := $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
@@ -13,7 +14,7 @@ endif
 NODE ?= node
 CPPLINT ?= cpplint.py
 BUILDTYPE ?= Release
-TESTS = "test/**/*.js"
+TESTS = $(wildcard test/*.spec.js test/**/*.spec.js)
 E2E_TESTS = $(wildcard e2e/*.spec.js)
 TEST_REPORTER = --reporter spec --verbose
 TEST_OUTPUT =
@@ -50,7 +51,7 @@ lib: node_modules/.dirstamp $(CONFIG_OUTPUTS)
 	@PYTHONHTTPSVERIFY=0 $(NODE-GYP) build $(GYPBUILDARGS)
 
 node_modules/.dirstamp: package.json
-	@npm update --loglevel warn
+	@$(NODE-MANAGER) update --loglevel warn
 	@touch $@
 
 $(CONFIG_OUTPUTS): node_modules/.dirstamp binding.gyp

@@ -4,11 +4,11 @@ specifiers:
   '@makeomatic/deploy': ^12.3.0
   '@mapbox/node-pre-gyp': ^1.0.8
   aws-sdk: ^2.1066.0
-  bluebird: ^3.5.3
-  jsdoc: ^3.4.0
-  jshint: ^2.10.1
+  bluebird: ^3.7.2
+  jsdoc: ^3.6.10
+  jshint: ^2.13.4
   mocha: ^9.2.0
-  nan: ^2.14.0
+  nan: ^2.15.0
   node-gyp: ^8.4.1
   semver: ^7.3.5
   toolkit-jsdoc: ^1.0.0
@@ -2590,7 +2590,7 @@ packages:
       redent: 3.0.0
       trim-newlines: 3.0.1
       type-fest: 0.18.1
-      yargs-parser: 20.2.4
+      yargs-parser: 20.2.9
     dev: true
 
   /merge-stream/2.0.0:
@@ -4253,6 +4253,11 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /yargs-parser/20.2.9:
+    resolution: {integrity: sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==}
+    engines: {node: '>=10'}
+    dev: true
+
   /yargs-parser/21.0.0:
     resolution: {integrity: sha512-z9kApYUOCwoeZ78rfRYYWdiU/iNL6mwwYlkkZfJoyMR1xps+NEBX5X7XmRpxkZHhXJ6+Ey00IwKxBBSW9FIjyA==}
     engines: {node: '>=12'}
@@ -4278,7 +4283,7 @@ packages:
       require-directory: 2.1.1
       string-width: 4.2.3
       y18n: 5.0.8
-      yargs-parser: 20.2.4
+      yargs-parser: 20.2.9
     dev: true
 
   /yargs/16.2.0:
