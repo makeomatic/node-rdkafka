@@ -8,10 +8,10 @@ set -e
 # This does not get run on windows which uses the build in solutions file
 
 # Get script directory
-scriptdir=$(cd "$( dirname "${0}" )" && pwd)
+scriptdir=$(cd "$(readlink -f $(dirname "${0}" ))" && pwd)
 
-pushd ./deps/librdkafka &> /dev/null
+cd $scriptdir/deps/librdkafka
 
 ./configure --prefix="${scriptdir}/build/deps" --libdir="${scriptdir}/build/deps" $*
 
-popd &> /dev/null
+cd $scriptdir

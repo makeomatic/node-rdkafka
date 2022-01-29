@@ -6,6 +6,7 @@ npm-debug.log
 docs
 
 deps/*
+!deps/.npmignore
 !deps/*.gyp
 !deps/windows-install.*
 
@@ -16,3 +17,4 @@ package-lock.json
 .pnpm-store
 pnpm-lock.yaml
 .env
+*.tgz

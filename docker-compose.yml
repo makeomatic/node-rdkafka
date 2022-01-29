@@ -31,13 +31,16 @@ services:
       KAFKA_HEAP_OPTS: "-Xmx512m -Xms512m"
 
   tester:
-    image: makeomatic/node:16-rdkafka-tester
+    image: makeomatic/node:${IMAGE_TAG:-16-rdkafka-tester}
     depends_on:
       - kafka
     volumes:
       - ${PWD}:/src
+      - ~/.pnpm-store:/src/.pnpm-store:ro
     command: tail -f /dev/null
     user: node
     network_mode: host
+    env_file:
+      - .env
     environment:
       - UV_THREADPOOL_SIZE=16
