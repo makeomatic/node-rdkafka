@@ -42,19 +42,19 @@ blocks:
   - name: publish
     dependencies: ["test"]
     task:
+      secrets:
+        - name: semantic-release
       jobs:
       - name: publish
-        secrets:
-          - name: semantic-release
         commands:
           - pnpm semantic-release
   - name: prebuild-binaries
     dependencies: ["publish"]
     task:
+      secrets:
+        - name: aws-s3-credentials
       jobs:
       - name: pre-build & publish binaries
-        secrets:
-          - name: aws-s3-credentials
         matrix:
         - env_var: NODE_VER
           values: ["16", "17"]
