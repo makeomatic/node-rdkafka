@@ -35,7 +35,7 @@ blocks:
       - name: test & publish binaries
         commands:
           - touch .env
-          - docker compose up -d
+          - docker-compose up -d
           - docker exec -it node-rdkafka-tester-1 pnpm binary:build
           - pnpm test
           - pnpm test:e2e
@@ -63,9 +63,9 @@ blocks:
         commands:
           - export IMAGE_TAG=${NODE_VER}${platform}
           - cp ~/.env.aws-s3-credentials .env
-          - docker compose up tester --wait
-          - docker compose exec tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
-          - docker compose exec tester pnpm binary:build
-          - docker compose exec tester pnpm binary:package
-          - docker compose exec tester pnpm binary:test
-          - docker compose exec tester pnpm binary:publish
+          - docker-compose up tester --wait
+          - docker-compose exec tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
+          - docker-compose exec tester pnpm binary:build
+          - docker-compose exec tester pnpm binary:package
+          - docker-compose exec tester pnpm binary:test
+          - docker-compose exec tester pnpm binary:publish
