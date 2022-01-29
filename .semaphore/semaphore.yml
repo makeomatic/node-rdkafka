@@ -36,7 +36,7 @@ blocks:
         commands:
           - touch .env
           - docker-compose up -d
-          - docker exec -it node-rdkafka-tester-1 pnpm binary:build
+          - docker-compose exec tester pnpm binary:build
           - pnpm test
           - pnpm test:e2e
   - name: publish
