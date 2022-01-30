@@ -1,3 +1,10 @@
+## [2.13.3](https://github.com/makeomatic/node-rdkafka/compare/v2.13.2...v2.13.3) (2022-01-30)
+
+
+### Bug Fixes
+
+* hacky way to skip tests on release ([5d72664](https://github.com/makeomatic/node-rdkafka/commit/5d726645e3f5b47dbca71874395da8aeeaf2b844))
+
 ## [2.13.2](https://github.com/makeomatic/node-rdkafka/compare/v2.13.1...v2.13.2) (2022-01-30)
 
 

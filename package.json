@@ -1,6 +1,6 @@
 {
   "name": "@makeomatic/node-rdkafka",
-  "version": "2.13.0",
+  "version": "2.13.3",
   "description": "Node.js bindings for librdkafka",
   "librdkafka": "1.8.2",
   "main": "lib/index.js",
