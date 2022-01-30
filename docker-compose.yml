@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   zookeeper:
+    profiles: ["tests"]
     image: confluentinc/cp-zookeeper
     ports:
       - "2181:2181"
@@ -11,6 +12,7 @@ services:
       JVMFLAGS: "-Xmx256m -Xms256m"
 
   kafka:
+    profiles: ["tests"]
     image: confluentinc/cp-kafka
     depends_on:
       - zookeeper
@@ -32,8 +34,6 @@ services:
 
   tester:
     image: makeomatic/node:${IMAGE_TAG:-16-rdkafka-tester}
-    depends_on:
-      - kafka
     volumes:
       - ${PWD}:/src
       - ${PWD}/ci/npmrc:/usr/local/etc/npmrc:ro
