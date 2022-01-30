@@ -3,6 +3,9 @@ lockfileVersion: 5.3
 specifiers:
   '@makeomatic/deploy': ^12.3.0
   '@mapbox/node-pre-gyp': ^1.0.8
+  '@semantic-release/changelog': ^6.0.1
+  '@semantic-release/git': ^10.0.1
+  '@semantic-release/github': ^8.0.2
   aws-sdk: ^2.1066.0
   bluebird: ^3.7.2
   jsdoc: ^3.6.10
@@ -10,6 +13,7 @@ specifiers:
   mocha: ^9.2.0
   nan: ^2.15.0
   node-gyp: ^8.4.1
+  semantic-release: ^19.0.2
   semver: ^7.3.5
   toolkit-jsdoc: ^1.0.0
 
@@ -19,12 +23,16 @@ dependencies:
 
 devDependencies:
   '@makeomatic/deploy': 12.3.0
+  '@semantic-release/changelog': 6.0.1_semantic-release@19.0.2
+  '@semantic-release/git': 10.0.1_semantic-release@19.0.2
+  '@semantic-release/github': 8.0.2_semantic-release@19.0.2
   aws-sdk: 2.1066.0
   bluebird: 3.7.2
   jsdoc: 3.6.10
   jshint: 2.13.4
   mocha: 9.2.0
   node-gyp: 8.4.1
+  semantic-release: 19.0.2
   semver: 7.3.5
   toolkit-jsdoc: 1.0.0
 
@@ -460,6 +468,19 @@ packages:
       '@octokit/openapi-types': 11.2.0
     dev: true
 
+  /@semantic-release/changelog/6.0.1_semantic-release@19.0.2:
+    resolution: {integrity: sha512-FT+tAGdWHr0RCM3EpWegWnvXJ05LQtBkQUaQRIExONoXjVjLuOILNm4DEKNaV+GAQyJjbLRVs57ti//GypH6PA==}
+    engines: {node: '>=14.17'}
+    peerDependencies:
+      semantic-release: '>=18.0.0'
+    dependencies:
+      '@semantic-release/error': 3.0.0
+      aggregate-error: 3.1.0
+      fs-extra: 9.1.0
+      lodash: 4.17.21
+      semantic-release: 19.0.2
+    dev: true
+
   /@semantic-release/commit-analyzer/9.0.2_semantic-release@19.0.2:
     resolution: {integrity: sha512-E+dr6L+xIHZkX4zNMe6Rnwg4YQrWNXK+rNsvwOPpdFppvZO1olE2fIgWhv89TkQErygevbjsZFSIxp+u6w2e5g==}
     engines: {node: '>=14.17'}
@@ -485,6 +506,25 @@ packages:
   /@semantic-release/error/3.0.0:
     resolution: {integrity: sha512-5hiM4Un+tpl4cKw3lV4UgzJj+SmfNIDCLLw0TepzQxz9ZGV5ixnqkzIVF+3tp0ZHgcMKE+VNGHJjEeyFG2dcSw==}
     engines: {node: '>=14.17'}
+    dev: true
+
+  /@semantic-release/git/10.0.1_semantic-release@19.0.2:
+    resolution: {integrity: sha512-eWrx5KguUcU2wUPaO6sfvZI0wPafUKAMNC18aXY4EnNcrZL86dEmpNVnC9uMpGZkmZJ9EfCVJBQx4pV4EMGT1w==}
+    engines: {node: '>=14.17'}
+    peerDependencies:
+      semantic-release: '>=18.0.0'
+    dependencies:
+      '@semantic-release/error': 3.0.0
+      aggregate-error: 3.1.0
+      debug: 4.3.3
+      dir-glob: 3.0.1
+      execa: 5.1.1
+      lodash: 4.17.21
+      micromatch: 4.0.4
+      p-reduce: 2.1.0
+      semantic-release: 19.0.2
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /@semantic-release/github/8.0.2_semantic-release@19.0.2:
@@ -809,6 +849,11 @@ packages:
 
   /async/1.5.2:
     resolution: {integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=}
+    dev: true
+
+  /at-least-node/1.0.0:
+    resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
+    engines: {node: '>= 4.0.0'}
     dev: true
 
   /atomic-sleep/1.0.0:
@@ -1734,6 +1779,16 @@ packages:
     resolution: {integrity: sha512-C5owb14u9eJwizKGdchcDUQeFtlSHHthBk8pbX9Vc1PFZrLombudjDnNns88aYslCyF6IY5SUw3Roz6xShcEIQ==}
     engines: {node: '>=12'}
     dependencies:
+      graceful-fs: 4.2.9
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+    dev: true
+
+  /fs-extra/9.1.0:
+    resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      at-least-node: 1.0.0
       graceful-fs: 4.2.9
       jsonfile: 6.1.0
       universalify: 2.0.0
@@ -4296,7 +4351,7 @@ packages:
       require-directory: 2.1.1
       string-width: 4.2.3
       y18n: 5.0.8
-      yargs-parser: 20.2.4
+      yargs-parser: 20.2.9
     dev: true
 
   /yargs/17.3.1:
