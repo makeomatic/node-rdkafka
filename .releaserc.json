@@ -1,18 +1,41 @@
 {
   "branches": [
-    "master",
-    { "name": "develop", "prerelease": true }
+    { "name": "master" },
+    { "name": "staging", "prerelease": "rc" }
   ],
-  "analyzeCommits": {
-    "preset": "angular",
-    "releaseRules": [
-      { "type": "docs", "release": "patch" },
-      { "type": "refactor", "release": "patch" },
-      { "type": "style", "release": "patch" },
-      { "type": "minor", "release": "minor" },
-      { "type": "patch", "release": "patch" },
-      { "type": "major", "release": "major" },
-      { "type": "breaking", "release": "major" }
-    ]
-  }
+  "plugins": [
+    ["@semantic-release/changelog", {
+      "changelogFile": "CHANGELOG.md"
+    }],
+    ["@semantic-release/git", {
+      "assets": ["CHANGELOG.md", "package.json"],
+      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+    }],
+    "@semantic-release/npm",
+    "@semantic-release/github",
+    ["@semantic-release/commit-analyzer", {
+      "preset": "angular",
+      "releaseRules": [
+        { "type": "docs", "release": "patch" },
+        { "type": "refactor", "release": "patch" },
+        { "type": "style", "release": "patch" },
+        { "type": "minor", "release": "minor" },
+        { "type": "patch", "release": "patch" },
+        { "type": "major", "release": "major" },
+        { "type": "breaking", "release": "major" }
+      ],
+      "parserOpts": {
+        "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+      }
+    }],
+    ["@semantic-release/release-notes-generator", {
+      "preset": "angular",
+      "parserOpts": {
+        "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+      },
+      "writerOpts": {
+        "commitsSort": ["subject", "scope"]
+      }
+    }]
+  ]
 }

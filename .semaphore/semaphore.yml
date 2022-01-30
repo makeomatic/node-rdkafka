@@ -5,14 +5,6 @@ agent:
     type: e1-standard-2
     os_image: ubuntu2004
 
-fail_fast:
-  stop:
-    when: "branch != 'master'"
-
-auto_cancel:
-  running:
-    when: "branch != 'master'"
-
 global_job_config:
   prologue:
     commands:
@@ -32,7 +24,8 @@ global_job_config:
 
 blocks:
   - name: test & release npm
-    dependencies: []
+    skip:
+      when: "tag =~ '.*'"
     task:
       secrets:
         - name: semantic-release
@@ -45,8 +38,10 @@ blocks:
           - docker-compose exec tester pnpm test
           - docker-compose exec tester pnpm test:e2e
           - pnpm semantic-release
+          - artifact push
   - name: prebuild-binaries
-    dependencies: ["test & release npm"]
+    run:
+      when: "tag =~ '.*'"
     task:
       secrets:
         - name: aws-s3-credentials
@@ -56,11 +51,10 @@ blocks:
         - env_var: NODE_VER
           values: ["16", "17"]
         - env_var: platform
-          values: ["", "-debian"]
+          values: ["-rdkafka", "-debian-rdkafka"]
         commands:
-          - export IMAGE_TAG=${NODE_VER}${platform}
           - cp ~/.env.aws-s3-credentials .env
-          - env UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose up -d
+          - env IMAGE_TAG=${NODE_VER}${platform} UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose up -d
           - docker-compose exec tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
           - docker-compose exec tester pnpm binary:build
           - docker-compose exec tester pnpm binary:package
