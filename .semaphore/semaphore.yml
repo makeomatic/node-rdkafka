@@ -29,9 +29,11 @@ global_job_config:
     value: '0'
 
 blocks:
-  - name: test
+  - name: test & release npm
     dependencies: []
     task:
+      secrets:
+        - name: semantic-release
       jobs:
       - name: test & publish binaries
         commands:
@@ -40,18 +42,9 @@ blocks:
           - docker-compose exec tester pnpm i
           - docker-compose exec tester pnpm test
           - docker-compose exec tester pnpm test:e2e
-  - name: publish
-    dependencies: ["test"]
-    task:
-      secrets:
-        - name: semantic-release
-      jobs:
-      - name: publish
-        commands:
-          - pnpm configure # generates deps/librdkafka/config.h and verifies package.json is correct
           - pnpm semantic-release
   - name: prebuild-binaries
-    dependencies: ["publish"]
+    dependencies: ["test & release npm"]
     task:
       secrets:
         - name: aws-s3-credentials
