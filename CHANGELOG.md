@@ -1,3 +1,11 @@
+## [2.13.4](https://github.com/makeomatic/node-rdkafka/compare/v2.13.3...v2.13.4) (2022-01-30)
+
+
+### Bug Fixes
+
+* release script ([1b805d6](https://github.com/makeomatic/node-rdkafka/commit/1b805d67ef043c395e1f654522d247c535756247))
+* use release script ([f8f81be](https://github.com/makeomatic/node-rdkafka/commit/f8f81be8f8f735d06a7dc37e8d171bec8d3e3982))
+
 ## [2.13.3](https://github.com/makeomatic/node-rdkafka/compare/v2.13.2...v2.13.3) (2022-01-30)
 
 
