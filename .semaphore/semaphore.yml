@@ -48,6 +48,7 @@ blocks:
       jobs:
       - name: publish
         commands:
+          - pnpm configure # generates deps/librdkafka/config.h and verifies package.json is correct
           - pnpm semantic-release
   - name: prebuild-binaries
     dependencies: ["publish"]
