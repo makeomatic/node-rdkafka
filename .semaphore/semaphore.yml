@@ -65,7 +65,7 @@ blocks:
         commands:
           - export IMAGE_TAG=${NODE_VER}${platform}
           - cp ~/.env.aws-s3-credentials .env
-          - env UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose up tester --wait
+          - env UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose up tester -d
           - docker-compose exec tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
           - docker-compose exec tester pnpm binary:build
           - docker-compose exec tester pnpm binary:package
