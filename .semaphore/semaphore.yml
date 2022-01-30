@@ -40,6 +40,7 @@ blocks:
           - SKIP_CI || docker-compose exec tester pnpm test:e2e
           - SKIP_CI || pnpm semantic-release
   - name: prebuild-binaries
+    dependencies: []
     run:
       when: "tag =~ '.*'"
     task:
