@@ -32,13 +32,7 @@ blocks:
       jobs:
       - name: test & publish binaries
         commands:
-          - SKIP_CI=$(git log --oneline -n 1 | grep "chore(release)" > /dev/null)
-          - SKIP_CI || touch .env
-          - SKIP_CI || env UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose --profile tests up -d
-          - SKIP_CI || docker-compose exec tester pnpm i
-          - SKIP_CI || docker-compose exec tester pnpm test
-          - SKIP_CI || docker-compose exec tester pnpm test:e2e
-          - SKIP_CI || pnpm semantic-release
+          - ./ci/semantic-release.sh
   - name: prebuild-binaries
     dependencies: []
     run:
