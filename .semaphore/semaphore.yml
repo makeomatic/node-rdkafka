@@ -38,7 +38,6 @@ blocks:
           - docker-compose exec tester pnpm test
           - docker-compose exec tester pnpm test:e2e
           - pnpm semantic-release
-          - artifact push
   - name: prebuild-binaries
     run:
       when: "tag =~ '.*'"
