@@ -16,14 +16,14 @@ global_job_config:
       - git submodule update
       - cache restore node-$(checksum pnpm-lock.yaml)
       - pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
-      - sudo chgrp -hR +1000 ~/.pnpm-store ./ # so that it matches node uid/gid in the docker container
       - cache store node-$(checksum pnpm-lock.yaml) ~/.pnpm-store
   env_vars:
   - name: BUILD_LIBRDKAFKA
     value: '0'
 
 blocks:
-  - name: test & release npm
+  - name: verify
+    dependencies: []
     skip:
       when: "tag =~ '.*'"
     task:
@@ -32,12 +32,13 @@ blocks:
       jobs:
       - name: test & publish binaries
         commands:
-          - touch .env
-          - env UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose --profile tests up -d
-          - docker-compose exec tester pnpm i
-          - docker-compose exec tester pnpm test
-          - docker-compose exec tester pnpm test:e2e
-          - pnpm semantic-release
+          - SKIP_CI=$(git log --oneline -n 1 | grep "chore(release)" > /dev/null)
+          - SKIP_CI || touch .env
+          - SKIP_CI || env UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose --profile tests up -d
+          - SKIP_CI || docker-compose exec tester pnpm i
+          - SKIP_CI || docker-compose exec tester pnpm test
+          - SKIP_CI || docker-compose exec tester pnpm test:e2e
+          - SKIP_CI || pnpm semantic-release
   - name: prebuild-binaries
     run:
       when: "tag =~ '.*'"
