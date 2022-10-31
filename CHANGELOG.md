@@ -1,3 +1,10 @@
+## [2.14.1](https://github.com/makeomatic/node-rdkafka/compare/v2.14.0...v2.14.1) (2022-10-31)
+
+
+### Bug Fixes
+
+* add node 18 ([ab35ccf](https://github.com/makeomatic/node-rdkafka/commit/ab35ccf9d3baaf8af757adc3b861c447dcbdd4c3))
+
 # [2.14.0](https://github.com/makeomatic/node-rdkafka/compare/v2.13.4...v2.14.0) (2022-10-31)
 
 
