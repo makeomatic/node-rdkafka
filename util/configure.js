@@ -19,7 +19,7 @@ if (isWin) {
 var childProcess = require('child_process');
 
 try {
-  childProcess.execSync('./configure --prefix=' + releaseDir + ' --libdir=' + releaseDir, {
+  childProcess.execSync('./configure --enable-static --prefix=' + releaseDir + ' --libdir=' + releaseDir, {
     cwd: baseDir,
     stdio: [0,1,2]
   });
