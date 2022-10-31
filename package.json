@@ -10,6 +10,11 @@
   "files": [
     "deps/librdkafka.gyp",
     "deps/librdkafka",
+    "!deps/librdkafka/examples",
+    "!deps/librdkafka/tests",
+    "!deps/librdkafka/.semaphore",
+    "!deps/librdkafka/.github",
+    "!deps/librdkafka/packaging",
     "!deps/librdkafka/config.h",
     "deps/windows-install.*",
     "src/",
