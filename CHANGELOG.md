@@ -1,3 +1,10 @@
+# [2.14.0](https://github.com/makeomatic/node-rdkafka/compare/v2.13.4...v2.14.0) (2022-10-31)
+
+
+### Features
+
+* update upstream, enable m1 ([b8612ac](https://github.com/makeomatic/node-rdkafka/commit/b8612acfc9d26d8b4db53c610cd67b42e36ca588))
+
 ## [2.13.4](https://github.com/makeomatic/node-rdkafka/compare/v2.13.3...v2.13.4) (2022-01-30)
 
 
