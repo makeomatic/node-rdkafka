@@ -1,3 +1,10 @@
+## [2.14.2](https://github.com/makeomatic/node-rdkafka/compare/v2.14.1...v2.14.2) (2022-10-31)
+
+
+### Bug Fixes
+
+* export types ([bd3f3b5](https://github.com/makeomatic/node-rdkafka/commit/bd3f3b53752010837551095a414898291b131f14))
+
 ## [2.14.1](https://github.com/makeomatic/node-rdkafka/compare/v2.14.0...v2.14.1) (2022-10-31)
 
 
