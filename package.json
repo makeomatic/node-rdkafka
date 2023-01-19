@@ -67,23 +67,23 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@makeomatic/deploy": "^12.3.0",
-    "@semantic-release/changelog": "^6.0.1",
+    "@makeomatic/deploy": "^12.9.0",
+    "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.2",
-    "aws-sdk": "^2.1066.0",
+    "@semantic-release/github": "^8.0.7",
+    "aws-sdk": "^2.1298.0",
     "bluebird": "^3.7.2",
-    "jsdoc": "^3.6.10",
-    "jshint": "^2.13.4",
-    "mocha": "^9.2.0",
-    "node-gyp": "^8.4.1",
-    "semantic-release": "^19.0.2",
-    "semver": "^7.3.5",
+    "jsdoc": "^3.6.11",
+    "jshint": "^2.13.6",
+    "mocha": "^10.2.0",
+    "node-gyp": "^9.3.1",
+    "semantic-release": "^19.0.5",
+    "semver": "^7.3.8",
     "toolkit-jsdoc": "^1.0.0"
   },
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.8",
-    "nan": "^2.15.0"
+    "@mapbox/node-pre-gyp": "^1.0.10",
+    "nan": "^2.17.0"
   },
   "engines": {
     "node": ">=6.0.0"
