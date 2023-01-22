@@ -1,3 +1,10 @@
+# [2.16.0](https://github.com/makeomatic/node-rdkafka/compare/v2.15.0...v2.16.0) (2023-01-22)
+
+
+### Features
+
+* merge upstream ([eb08eaf](https://github.com/makeomatic/node-rdkafka/commit/eb08eaf1fbbde8a6d645e65f6fd47ff5343dcc6c))
+
 # [2.15.0](https://github.com/makeomatic/node-rdkafka/compare/v2.14.2...v2.15.0) (2023-01-22)
 
 
