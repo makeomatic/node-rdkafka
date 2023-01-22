@@ -1,3 +1,15 @@
+# [2.15.0](https://github.com/makeomatic/node-rdkafka/compare/v2.14.2...v2.15.0) (2023-01-22)
+
+
+### Bug Fixes
+
+* upgrade deps ([6426300](https://github.com/makeomatic/node-rdkafka/commit/64263004a86b9101eb9d02fd0b10459ba96be449))
+
+
+### Features
+
+* update librdkafka ([#1](https://github.com/makeomatic/node-rdkafka/issues/1)) ([272246b](https://github.com/makeomatic/node-rdkafka/commit/272246b30671b89bbddb7d8ef983659717d9bead))
+
 ## [2.14.2](https://github.com/makeomatic/node-rdkafka/compare/v2.14.1...v2.14.2) (2022-10-31)
 
 
