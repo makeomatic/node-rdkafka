@@ -2,7 +2,7 @@
   "name": "@makeomatic/node-rdkafka",
   "version": "2.14.2",
   "description": "Node.js bindings for librdkafka",
-  "librdkafka": "1.9.2",
+  "librdkafka": "2.0.2",
   "main": "lib/index.js",
   "publishConfig": {
     "access": "public"
