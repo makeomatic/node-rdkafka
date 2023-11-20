@@ -2,7 +2,7 @@
   "name": "@makeomatic/node-rdkafka",
   "version": "2.16.0",
   "description": "Node.js bindings for librdkafka",
-  "librdkafka": "2.0.2",
+  "librdkafka": "2.3.0",
   "main": "lib/index.js",
   "publishConfig": {
     "access": "public"
@@ -67,25 +67,25 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@makeomatic/deploy": "^12.9.0",
-    "@semantic-release/changelog": "^6.0.2",
+    "@makeomatic/deploy": "^12.11.1",
+    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.7",
-    "aws-sdk": "^2.1298.0",
+    "@semantic-release/github": "^9.2.3",
+    "aws-sdk": "^2.1500.0",
     "bluebird": "^3.7.2",
-    "jsdoc": "^3.6.11",
+    "jsdoc": "^4.0.2",
     "jshint": "^2.13.6",
     "mocha": "^10.2.0",
-    "node-gyp": "^9.3.1",
-    "semantic-release": "^19.0.5",
-    "semver": "^7.3.8",
+    "node-gyp": "^10.0.1",
+    "semantic-release": "^22.0.8",
+    "semver": "^7.5.4",
     "toolkit-jsdoc": "^1.0.0"
   },
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.10",
-    "nan": "^2.17.0"
+    "@mapbox/node-pre-gyp": "^1.0.11",
+    "nan": "^2.18.0"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=6.0.0"
   }
 }
