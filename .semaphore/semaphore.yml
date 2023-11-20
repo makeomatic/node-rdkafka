@@ -44,7 +44,7 @@ blocks:
       - name: pre-build & publish binaries
         matrix:
         - env_var: NODE_VER
-          values: ["18", "20"]
+          values: ["18", "20", "21"]
         - env_var: platform
           values: ["-rdkafka", "-debian-rdkafka"]
         commands:
