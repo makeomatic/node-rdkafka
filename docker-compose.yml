@@ -38,10 +38,11 @@ services:
       - ${PWD}:/src
       - ${PWD}/ci/npmrc:/usr/local/etc/npmrc:ro
       - ${PNPM_STORE:-~/.pnpm-store}:/tmp/.pnpm-store
-    command: tail -f /dev/null
-    user: "${UID:-1000}:${UID:-1000}"
+    command: /bin/sh -c "addgroup --gid 501 builder; useradd -g ${UID} -u ${UID} --create-home builder; exec tail -f /dev/null"
     network_mode: host
     env_file:
       - .env
     environment:
       - UV_THREADPOOL_SIZE=16
+      - CI=true
+      - UID=${UID:-1000}

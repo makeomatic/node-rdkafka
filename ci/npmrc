@@ -1,1 +1,2 @@
 store-dir=/tmp/.pnpm-store
+package-import-method=clone-or-copy

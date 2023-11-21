@@ -11,10 +11,12 @@ set -ex
 # Example: NODE_VER=20 platform=-debian-rdkafka ./ci/build-and-publish.sh
 # Example: NODE_VER=21 platform=-debian-rdkafka ./ci/build-and-publish.sh
 
-cp ~/.env.aws-s3-credentials .env
-env IMAGE_TAG=${NODE_VER}${platform} UID=${UID} PNPM_STORE=$(pnpm config get store-dir) docker-compose up -d
-docker-compose exec tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
-docker-compose exec tester pnpm binary:build
-docker-compose exec tester pnpm binary:package
-docker-compose exec tester pnpm binary:test
-docker-compose exec tester pnpm binary:publish
+if [ x"$CI" = x"true" ]; then
+  cp ~/.env.aws-s3-credentials .env
+fi
+env IMAGE_TAG=${NODE_VER}${platform} UID=${UID} PNPM_STORE="$(pnpm config get store-dir)" docker-compose up -d
+env UID=${UID} docker-compose exec -u ${UID} tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
+env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:build
+env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:package
+env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:test
+env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:publish
