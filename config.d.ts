@@ -1,4 +1,4 @@
-// ====== Generated from librdkafka 2.0.2 file CONFIGURATION.md ======
+// ====== Generated from librdkafka 2.3.0 file CONFIGURATION.md ======
 // Code that generated this is a derivative work of the code from Nam Nguyen
 // https://gist.github.com/ntgn81/066c2c8ec5b4238f85d1e9168a04e3fb
 
@@ -77,9 +77,9 @@ export interface GlobalConfig {
     "metadata.max.age.ms"?: number;
 
     /**
-     * When a topic loses its leader a new metadata request will be enqueued with this initial interval, exponentially increasing until the topic metadata has been refreshed. This is used to recover quickly from transitioning leader brokers.
+     * When a topic loses its leader a new metadata request will be enqueued immediately and then with this initial interval, exponentially increasing upto `retry.backoff.max.ms`, until the topic metadata has been refreshed. If not set explicitly, it will be defaulted to `retry.backoff.ms`. This is used to recover quickly from transitioning leader brokers.
      *
-     * @default 250
+     * @default 100
      */
     "topic.metadata.refresh.fast.interval.ms"?: number;
 
@@ -620,6 +620,13 @@ export interface GlobalConfig {
     "client.rack"?: string;
 
     /**
+     * Controls how the client uses DNS lookups. By default, when the lookup returns multiple IP addresses for a hostname, they will all be attempted for connection before the connection is considered failed. This applies to both bootstrap and advertised servers. If the value is set to `resolve_canonical_bootstrap_servers_only`, each entry will be resolved and expanded into a list of canonical names. NOTE: Default here is different from the Java client's default behavior, which connects only to the first IP address returned for a hostname.
+     *
+     * @default use_all_dns_ips
+     */
+    "client.dns.lookup"?: 'use_all_dns_ips' | 'resolve_canonical_bootstrap_servers_only';
+
+    /**
      * Enables or disables `event.*` emitting.
      *
      * @default true
@@ -697,11 +704,18 @@ export interface ProducerGlobalConfig extends GlobalConfig {
     "retries"?: number;
 
     /**
-     * The backoff time in milliseconds before retrying a protocol request.
+     * The backoff time in milliseconds before retrying a protocol request, this is the first backoff time, and will be backed off exponentially until number of retries is exhausted, and it's capped by retry.backoff.max.ms.
      *
      * @default 100
      */
     "retry.backoff.ms"?: number;
+
+    /**
+     * The max backoff time in milliseconds before retrying a protocol request, this is the atmost backoff allowed for exponentially backed off requests.
+     *
+     * @default 1000
+     */
+    "retry.backoff.max.ms"?: number;
 
     /**
      * The threshold of outstanding not yet transmitted broker requests needed to backpressure the producer's message accumulator. If the number of not yet transmitted requests equals or exceeds this number, produce request creation that would have otherwise been triggered (for example, in accordance with linger.ms) will be delayed. A lower number yields larger and more effective batches. A higher value can improve latency when using compression on slow machines.
@@ -857,6 +871,13 @@ export interface ConsumerGlobalConfig extends GlobalConfig {
      * @default 500
      */
     "fetch.wait.max.ms"?: number;
+
+    /**
+     * How long to postpone the next fetch request for a topic+partition in case the current fetch queue thresholds (queued.min.messages or queued.max.messages.kbytes) have been exceded. This property may need to be decreased if the queue thresholds are set low and the application is experiencing long (~1s) delays between messages. Low values may increase CPU utilization.
+     *
+     * @default 1000
+     */
+    "fetch.queue.backoff.ms"?: number;
 
     /**
      * Initial maximum number of bytes per topic+partition to request when fetching messages from the broker. If the client encounters a message larger than this value it will gradually try to increase it until the entire message can be fetched.
