@@ -1,3 +1,10 @@
+# [2.17.0](https://github.com/makeomatic/node-rdkafka/compare/v2.16.0...v2.17.0) (2023-11-21)
+
+
+### Features
+
+* rdkafka 2.3, upgrade deps ([#2](https://github.com/makeomatic/node-rdkafka/issues/2)) ([0e7c110](https://github.com/makeomatic/node-rdkafka/commit/0e7c110aff488c18081fa56374a53167a5dc6477))
+
 # [2.16.0](https://github.com/makeomatic/node-rdkafka/compare/v2.15.0...v2.16.0) (2023-01-22)
 
 
