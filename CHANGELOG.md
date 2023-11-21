@@ -1,3 +1,10 @@
+## [2.17.1](https://github.com/makeomatic/node-rdkafka/compare/v2.17.0...v2.17.1) (2023-11-21)
+
+
+### Bug Fixes
+
+* missing users in build process ([1097406](https://github.com/makeomatic/node-rdkafka/commit/1097406a0fcaaa4cf8093eda56e21d028cd776db))
+
 # [2.17.0](https://github.com/makeomatic/node-rdkafka/compare/v2.16.0...v2.17.0) (2023-11-21)
 
 
