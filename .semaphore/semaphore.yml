@@ -8,16 +8,15 @@ agent:
 global_job_config:
   prologue:
     commands:
-      - sem-version node 20
-      - curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=8.10.2 sh -
-      - source /home/semaphore/.bashrc
-      - pnpm config set store-dir=~/.pnpm-store
+      - sem-version node --lts
+      - corepack enable
+      - corepack install --global pnpm@9.x
       - checkout
       - git submodule init
       - git submodule update
       - cache restore node-$(checksum pnpm-lock.yaml)
       - pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
-      - cache store node-$(checksum pnpm-lock.yaml) $(pnpm config get store-dir)
+      - cache store node-$(checksum pnpm-lock.yaml) $(pnpm store path)
   env_vars:
   - name: BUILD_LIBRDKAFKA
     value: '0'
@@ -45,7 +44,7 @@ blocks:
       - name: pre-build & publish binaries
         matrix:
         - env_var: NODE_VER
-          values: ["18", "20", "21"]
+          values: ["22", "23"]
         - env_var: platform
           values: ["-rdkafka", "-debian-rdkafka"]
         commands:
