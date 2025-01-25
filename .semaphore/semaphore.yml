@@ -19,7 +19,7 @@ global_job_config:
       - cache store node-$(checksum pnpm-lock.yaml) $(pnpm store path)
   env_vars:
   - name: BUILD_LIBRDKAFKA
-    value: '0'
+    value: '1'
 
 blocks:
   - name: verify

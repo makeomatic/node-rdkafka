@@ -43,6 +43,7 @@ services:
     env_file:
       - .env
     environment:
+      - BUILD_RDKAFKA=1
       - UV_THREADPOOL_SIZE=16
       - CI=true
       - UID=${UID:-1000}
