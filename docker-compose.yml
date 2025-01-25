@@ -33,7 +33,7 @@ services:
       KAFKA_HEAP_OPTS: "-Xmx512m -Xms512m"
 
   tester:
-    image: makeomatic/node:${IMAGE_TAG:-16-rdkafka-tester}
+    image: makeomatic/node:${IMAGE_TAG:-22-rdkafka-tester}
     volumes:
       - ${PWD}:/src
       - ${PWD}/ci/npmrc:/usr/local/etc/npmrc:ro
