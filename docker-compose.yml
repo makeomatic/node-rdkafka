@@ -41,7 +41,7 @@ services:
     env_file:
       - .env
     environment:
-      - BUILD_LIBRDKAFKA=1
+      - BUILD_LIBRDKAFKA=0
       - UV_THREADPOOL_SIZE=16
       - CI=true
       - UID=${UID:-1000}
