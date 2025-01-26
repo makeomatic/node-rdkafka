@@ -1400,7 +1400,6 @@ NAN_METHOD(KafkaConsumer::NodeDisconnect) {
     consumer->m_consume_loop = nullptr;
   }
 
-  printf("Workers::KafkaConsumerDisconnect(callback, consumer)\n");
   Nan::AsyncQueueWorker(
     new Workers::KafkaConsumerDisconnect(callback, consumer));
   info.GetReturnValue().Set(Nan::Null());
