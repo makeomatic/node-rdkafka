@@ -15,7 +15,7 @@ if [ x"$CI" = x"true" ]; then
   cp ~/.env.aws-s3-credentials .env
 fi
 env IMAGE_TAG=${NODE_VER}${platform} UID=${UID} PNPM_STORE="$(pnpm store path)" docker-compose up -d
-env UID=${UID} docker-compose exec -u ${UID} tester pnpm i --frozen-lockfile --prefer-offline --ignore-scripts
+env UID=${UID} docker-compose exec -u ${UID} tester pnpm i --frozen-lockfile --offline --ignore-scripts
 env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:build
 env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:package
 env UID=${UID} docker-compose exec -u ${UID} tester pnpm binary:test

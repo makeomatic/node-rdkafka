@@ -66,7 +66,7 @@ void OffsetsForTimes::HandleOKCallback() {
   argv[0] = Nan::Null();
   argv[1] = Conversion::TopicPartition::ToV8Array(m_topic_partitions);
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void OffsetsForTimes::HandleErrorCallback() {
@@ -75,7 +75,7 @@ void OffsetsForTimes::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 }  // namespace Handle
 
@@ -113,7 +113,7 @@ void ConnectionMetadata::HandleOKCallback() {
   v8::Local<v8::Value> argv[argc] = { Nan::Null(),
     Conversion::Metadata::ToV8Object(m_metadata)};
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 
   delete m_metadata;
 }
@@ -124,7 +124,7 @@ void ConnectionMetadata::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -171,7 +171,7 @@ void ConnectionQueryWatermarkOffsets::HandleOKCallback() {
   // This is a big one!
   v8::Local<v8::Value> argv[argc] = { Nan::Null(), offsetsObj};
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ConnectionQueryWatermarkOffsets::HandleErrorCallback() {
@@ -180,7 +180,7 @@ void ConnectionQueryWatermarkOffsets::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -220,7 +220,7 @@ void ProducerConnect::HandleOKCallback() {
   // Activate the dispatchers
   producer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerConnect::HandleErrorCallback() {
@@ -229,7 +229,7 @@ void ProducerConnect::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -258,7 +258,7 @@ void ProducerDisconnect::HandleOKCallback() {
   // Deactivate the dispatchers
   producer->DeactivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerDisconnect::HandleErrorCallback() {
@@ -298,7 +298,7 @@ void ProducerFlush::HandleOKCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { Nan::Null() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -335,7 +335,7 @@ void ProducerInitTransactions::HandleOKCallback() {
   // Activate the dispatchers
   producer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerInitTransactions::HandleErrorCallback() {
@@ -344,7 +344,7 @@ void ProducerInitTransactions::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { m_baton.ToTxnObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -380,7 +380,7 @@ void ProducerBeginTransaction::HandleOKCallback() {
   // Activate the dispatchers
   producer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerBeginTransaction::HandleErrorCallback() {
@@ -389,7 +389,7 @@ void ProducerBeginTransaction::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -426,7 +426,7 @@ void ProducerCommitTransaction::HandleOKCallback() {
   // Activate the dispatchers
   producer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerCommitTransaction::HandleErrorCallback() {
@@ -435,7 +435,7 @@ void ProducerCommitTransaction::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { m_baton.ToTxnObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -472,7 +472,7 @@ void ProducerAbortTransaction::HandleOKCallback() {
   // Activate the dispatchers
   producer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerAbortTransaction::HandleErrorCallback() {
@@ -481,7 +481,7 @@ void ProducerAbortTransaction::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { m_baton.ToTxnObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -528,7 +528,7 @@ void ProducerSendOffsetsToTransaction::HandleOKCallback() {
   // Activate the dispatchers
   producer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void ProducerSendOffsetsToTransaction::HandleErrorCallback() {
@@ -537,7 +537,7 @@ void ProducerSendOffsetsToTransaction::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { m_baton.ToTxnObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -578,7 +578,7 @@ void KafkaConsumerConnect::HandleOKCallback() {
   v8::Local<v8::Value> argv[argc] = { Nan::Null(), obj };
   consumer->ActivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerConnect::HandleErrorCallback() {
@@ -587,7 +587,7 @@ void KafkaConsumerConnect::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { Nan::Error(ErrorMessage()) };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -622,7 +622,7 @@ void KafkaConsumerDisconnect::HandleOKCallback() {
 
   consumer->DeactivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerDisconnect::HandleErrorCallback() {
@@ -633,7 +633,7 @@ void KafkaConsumerDisconnect::HandleErrorCallback() {
 
   consumer->DeactivateDispatchers();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -767,7 +767,7 @@ void KafkaConsumerConsumeLoop::HandleMessageCallback(RdKafka::Message* msg, RdKa
     delete msg;
   }
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerConsumeLoop::HandleOKCallback() {
@@ -780,7 +780,7 @@ void KafkaConsumerConsumeLoop::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { Nan::Error(ErrorMessage()) };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -824,7 +824,7 @@ void KafkaConsumerConsumeNum::Execute() {
           if (m_messages.size() > eof_event_count) {
             timeout_ms = 1;
           }
-          
+
           // We will only go into this code path when `enable.partition.eof` is set to true
           // In this case, consumer is also interested in EOF messages, so we return an EOF message
           m_messages.push_back(message);
@@ -872,7 +872,7 @@ void KafkaConsumerConsumeNum::HandleOKCallback() {
     for (std::vector<RdKafka::Message*>::iterator it = m_messages.begin();
         it != m_messages.end(); ++it) {
       RdKafka::Message* message = *it;
-      
+
       switch (message->err()) {
         case RdKafka::ERR_NO_ERROR:
           ++returnArrayIndex;
@@ -890,7 +890,7 @@ void KafkaConsumerConsumeNum::HandleOKCallback() {
             Nan::New<v8::Number>(message->offset()));
           Nan::Set(eofEvent, Nan::New<v8::String>("partition").ToLocalChecked(),
             Nan::New<v8::Number>(message->partition()));
-          
+
           // also store index at which position in the message array this event was emitted
           // this way, we can later emit it at the right point in time
           Nan::Set(eofEvent, Nan::New<v8::String>("messageIndex").ToLocalChecked(),
@@ -898,7 +898,7 @@ void KafkaConsumerConsumeNum::HandleOKCallback() {
 
           Nan::Set(eofEventsArray, eofEventsArrayIndex, eofEvent);
       }
-      
+
       delete message;
     }
   }
@@ -906,7 +906,7 @@ void KafkaConsumerConsumeNum::HandleOKCallback() {
   argv[1] = returnArray;
   argv[2] = eofEventsArray;
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerConsumeNum::HandleErrorCallback() {
@@ -923,7 +923,7 @@ void KafkaConsumerConsumeNum::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -972,7 +972,7 @@ void KafkaConsumerConsume::HandleOKCallback() {
 
   delete m_message;
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerConsume::HandleErrorCallback() {
@@ -981,7 +981,7 @@ void KafkaConsumerConsume::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -1024,7 +1024,7 @@ void KafkaConsumerCommitted::HandleOKCallback() {
   argv[0] = Nan::Null();
   argv[1] = Conversion::TopicPartition::ToV8Array(m_topic_partitions);
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerCommitted::HandleErrorCallback() {
@@ -1033,7 +1033,7 @@ void KafkaConsumerCommitted::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -1086,7 +1086,7 @@ void KafkaConsumerSeek::HandleOKCallback() {
 
   argv[0] = Nan::Null();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void KafkaConsumerSeek::HandleErrorCallback() {
@@ -1095,7 +1095,7 @@ void KafkaConsumerSeek::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -1133,7 +1133,7 @@ void AdminClientCreateTopic::HandleOKCallback() {
 
   argv[0] = Nan::Null();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void AdminClientCreateTopic::HandleErrorCallback() {
@@ -1142,7 +1142,7 @@ void AdminClientCreateTopic::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -1180,7 +1180,7 @@ void AdminClientDeleteTopic::HandleOKCallback() {
 
   argv[0] = Nan::Null();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void AdminClientDeleteTopic::HandleErrorCallback() {
@@ -1189,7 +1189,7 @@ void AdminClientDeleteTopic::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 /**
@@ -1228,7 +1228,7 @@ void AdminClientCreatePartitions::HandleOKCallback() {
 
   argv[0] = Nan::Null();
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 void AdminClientCreatePartitions::HandleErrorCallback() {
@@ -1237,7 +1237,7 @@ void AdminClientCreatePartitions::HandleErrorCallback() {
   const unsigned int argc = 1;
   v8::Local<v8::Value> argv[argc] = { GetErrorObject() };
 
-  callback->Call(argc, argv);
+  callback->Call(argc, argv, async_resource);
 }
 
 }  // namespace Workers

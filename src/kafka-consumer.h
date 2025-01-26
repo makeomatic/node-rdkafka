@@ -103,7 +103,7 @@ class KafkaConsumer : public Connection {
   bool m_is_subscribed = false;
 
   void* m_consume_loop = nullptr;
-  
+
   // Node methods
   static NAN_METHOD(NodeConnect);
   static NAN_METHOD(NodeSubscribe);

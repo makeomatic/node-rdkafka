@@ -84,7 +84,7 @@ describe('Consumer/Producer', function() {
 
   });
 
-  afterEach(function(done) {
+  afterEach('disconnect', function(done) {
     var finished = 0;
     var called = false;
 
@@ -105,10 +105,12 @@ describe('Consumer/Producer', function() {
     }
 
     consumer.disconnect(function(err) {
+      console.log('consumer disconnected')
       maybeDone(err);
     });
 
     producer.disconnect(function(err) {
+      console.log('producer disconnected')
       maybeDone(err);
     });
   });

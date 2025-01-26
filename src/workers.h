@@ -26,8 +26,8 @@ namespace Workers {
 
 class ErrorAwareWorker : public Nan::AsyncWorker {
  public:
-  explicit ErrorAwareWorker(Nan::Callback* callback_) :
-    Nan::AsyncWorker(callback_),
+  explicit ErrorAwareWorker(Nan::Callback* callback_, const char* resource_name = "ErrorAwareWorker") :
+    Nan::AsyncWorker(callback_, resource_name),
     m_baton(RdKafka::ERR_NO_ERROR) {}
   virtual ~ErrorAwareWorker() {}
 
@@ -39,7 +39,7 @@ class ErrorAwareWorker : public Nan::AsyncWorker {
     const unsigned int argc = 1;
     v8::Local<v8::Value> argv[argc] = { Nan::Error(ErrorMessage()) };
 
-    callback->Call(argc, argv);
+    callback->Call(argc, argv, async_resource);
   }
 
  protected:

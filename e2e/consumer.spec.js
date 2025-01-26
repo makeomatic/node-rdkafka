@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var eventListener = require('./listener');
 
 var KafkaConsumer = require('../').KafkaConsumer;
+var LibrdKafkaError = require('../lib/error');
 
 var kafkaBrokerList = process.env.KAFKA_HOST || 'localhost:9092';
 var topic = 'test';
@@ -137,9 +138,8 @@ describe('Consumer', function() {
 
     it('should obey the timeout', function(done) {
       consumer.committed(null, 0, function(err, committed) {
-        if (!err) {
-          t.fail(err, 'not null', 'Error should be set for a timeout');
-        }
+        t.ok(err, 'Error should be set for a timeout')
+        t.equal(err.code, LibrdKafkaError.codes.ERR__TIMED_OUT)
         done();
       });
     });
@@ -361,24 +361,24 @@ describe('Consumer', function() {
         }, {});
 
         t.equal(consumer.rebalanceProtocol(), 'NONE');
-  
+
         consumer.connect({ timeout: 2000 }, function(err) {
           t.ifError(err);
-  
+
           consumer.subscribe([topic]);
-  
+
           consumer.on('rebalance', function (err) {
             if (err.code === -175) {
               t.equal(consumer.rebalanceProtocol(), strategies[strategy]);
               consumer.disconnect(done);
             }
           });
-  
+
           consumer.consume(1, function(err) {
             t.ifError(err);
           });
         });
-  
+
         eventListener(consumer);
       });
     });
