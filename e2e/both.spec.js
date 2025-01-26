@@ -105,12 +105,10 @@ describe('Consumer/Producer', function() {
     }
 
     consumer.disconnect(function(err) {
-      console.log('consumer disconnected')
       maybeDone(err);
     });
 
     producer.disconnect(function(err) {
-      console.log('producer disconnected')
       maybeDone(err);
     });
   });
