@@ -1,3 +1,17 @@
+# [2.18.0](https://github.com/makeomatic/node-rdkafka/compare/v2.17.1...v2.18.0) (2025-01-26)
+
+
+### Bug Fixes
+
+* cleanup consumer messages queue due to possible deadlock ([171f1f4](https://github.com/makeomatic/node-rdkafka/commit/171f1f4c8be0bbbcafda6223daafad167a1c4dd6))
+* update dependencies, fix deprecations ([14985ce](https://github.com/makeomatic/node-rdkafka/commit/14985cea720193ac43d01196a7b2c2876fdbc104))
+
+
+### Features
+
+* node 22 support, latest rdkafka ([b4bbf3d](https://github.com/makeomatic/node-rdkafka/commit/b4bbf3d38f5ee61ad079f4710bfb80dbcface02b))
+* upgrade to latest version ([ce40ac8](https://github.com/makeomatic/node-rdkafka/commit/ce40ac86e28ac5cb6bb37de7c628a3a58822b9ea))
+
 ## [2.17.1](https://github.com/makeomatic/node-rdkafka/compare/v2.17.0...v2.17.1) (2023-11-21)
 
 
