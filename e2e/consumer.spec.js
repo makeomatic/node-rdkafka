@@ -12,6 +12,7 @@ var crypto = require('crypto');
 var eventListener = require('./listener');
 
 var KafkaConsumer = require('../').KafkaConsumer;
+var LibrdKafkaError = require('../lib/error');
 
 var kafkaBrokerList = process.env.KAFKA_HOST || 'localhost:9092';
 var topic = 'test';
@@ -65,7 +66,7 @@ describe('Consumer', function() {
     beforeEach(function(done) {
       consumer = new KafkaConsumer(gcfg, {});
 
-      consumer.connect({ timeout: 2000 }, function(err, info) {
+      consumer.connect({ timeout: 5000 }, function(err, info) {
         t.ifError(err);
         done();
       });
@@ -73,7 +74,7 @@ describe('Consumer', function() {
       eventListener(consumer);
     });
 
-    afterEach(function(done) {
+    afterEach('disconnect', function(done) {
       consumer.disconnect(function() {
         done();
       });
@@ -113,7 +114,9 @@ describe('Consumer', function() {
       consumer.assign([{topic:topic, partition:0}]);
       consumer.commitSync({topic:topic, partition:0, offset:1000});
       consumer.committed(null, 1000, function(err, committed) {
-        t.ifError(err);
+        if (err) {
+          return done(err);
+        }
         t.equal(committed.length, 1);
         t.equal(typeof committed[0], 'object', 'TopicPartition should be an object');
         t.deepStrictEqual(committed[0].partition, 0);
@@ -137,9 +140,8 @@ describe('Consumer', function() {
 
     it('should obey the timeout', function(done) {
       consumer.committed(null, 0, function(err, committed) {
-        if (!err) {
-          t.fail(err, 'not null', 'Error should be set for a timeout');
-        }
+        t.ok(err, 'Error should be set for a timeout')
+        t.equal(err.code, LibrdKafkaError.codes.ERR__TIMED_OUT)
         done();
       });
     });
@@ -343,5 +345,44 @@ describe('Consumer', function() {
       });
     });
 
+  });
+
+  describe('rebalance protocol', function () {
+    var strategies = {
+      'undefined': 'EAGER',
+      'range': 'EAGER',
+      'roundrobin': 'EAGER',
+      'cooperative-sticky': 'COOPERATIVE',
+    };
+
+    Object.keys(strategies).forEach(function (strategy) {
+      it('should return ' + strategies[strategy] + ' for ' + strategy, function(done) {
+        var consumer = new KafkaConsumer({
+          ...gcfg,
+          ...(strategy !== 'undefined' && { 'partition.assignment.strategy': strategy })
+        }, {});
+
+        t.equal(consumer.rebalanceProtocol(), 'NONE');
+
+        consumer.connect({ timeout: 2000 }, function(err) {
+          t.ifError(err);
+
+          consumer.subscribe([topic]);
+
+          consumer.on('rebalance', function (err) {
+            if (err.code === -175) {
+              t.equal(consumer.rebalanceProtocol(), strategies[strategy]);
+              consumer.disconnect(done);
+            }
+          });
+
+          consumer.consume(1, function(err) {
+            t.ifError(err);
+          });
+        });
+
+        eventListener(consumer);
+      });
+    });
   });
 });

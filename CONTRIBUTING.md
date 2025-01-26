@@ -13,6 +13,7 @@ so if you feel something is missing feel free to send a pull request.
   * [Contributor Agreement](#contributor-agreement)
 
 [How Can I Contribute?](#how-can-i-contribute)
+  * [Setting up the repository](#setting-up-the-repository)
   * [Reporting Bugs](#reporting-bugs)
   * [Suggesting Enhancements](#suggesting-enhancements)
   * [Pull Requests](#pull-requests)
@@ -36,6 +37,14 @@ so if you feel something is missing feel free to send a pull request.
 Not currently required.
 
 ## How can I contribute?
+
+### Setting up the repository
+
+To set up the library locally, do the following:
+
+1) Clone this repository.
+2) Install librdkafka with `git submodule update --init --recursive`
+3) Install the dependencies `npm install`
 
 ### Reporting Bugs
 
@@ -164,7 +173,7 @@ I began using Visual Studio code to develop on `node-rdkafka`. If you use it you
             ],
             "defines": [],
             "macFrameworkPath": [
-                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",

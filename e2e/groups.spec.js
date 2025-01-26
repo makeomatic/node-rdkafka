@@ -7,8 +7,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-var crypto = require('crypto');
-var t = require('assert');
+var crypto = require('node:crypto');
+var t = require('node:assert');
 
 var Kafka = require('../');
 var kafkaBrokerList = process.env.KAFKA_HOST || 'localhost:9092';
@@ -95,7 +95,7 @@ describe('Consumer group/Producer', function() {
           t.deepStrictEqual(offsets.committed, message.offset, 'Offset read by consumer 2 incorrect');
           clearInterval(tt);
           consumer2.unsubscribe();
-          consumer2.disconnect(function() {
+          consumer2.disconnect(function () {
             done();
           });
         }
@@ -105,6 +105,7 @@ describe('Consumer group/Producer', function() {
         consumer2.subscribe([topic]);
         consumer2.consume();
       });
+
       consumer2.connect();
     });
 

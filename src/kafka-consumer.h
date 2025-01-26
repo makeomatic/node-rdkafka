@@ -74,9 +74,13 @@ class KafkaConsumer : public Connection {
   Baton Assign(std::vector<RdKafka::TopicPartition*>);
   Baton Unassign();
 
+  Baton IncrementalAssign(std::vector<RdKafka::TopicPartition*>);
+  Baton IncrementalUnassign(std::vector<RdKafka::TopicPartition*>);
+
   Baton Seek(const RdKafka::TopicPartition &partition, int timeout_ms);
 
   std::string Name();
+  std::string RebalanceProtocol();
 
   Baton Subscribe(std::vector<std::string>);
   Baton Consume(int timeout_ms);
@@ -99,13 +103,16 @@ class KafkaConsumer : public Connection {
   bool m_is_subscribed = false;
 
   void* m_consume_loop = nullptr;
-  
+
   // Node methods
   static NAN_METHOD(NodeConnect);
   static NAN_METHOD(NodeSubscribe);
   static NAN_METHOD(NodeDisconnect);
   static NAN_METHOD(NodeAssign);
   static NAN_METHOD(NodeUnassign);
+  static NAN_METHOD(NodeIncrementalAssign);
+  static NAN_METHOD(NodeIncrementalUnassign);
+  static NAN_METHOD(NodeRebalanceProtocol);
   static NAN_METHOD(NodeAssignments);
   static NAN_METHOD(NodeUnsubscribe);
   static NAN_METHOD(NodeCommit);

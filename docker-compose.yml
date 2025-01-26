@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   zookeeper:
     profiles: ["tests"]
@@ -27,13 +25,13 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_DEFAULT_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_NUM_NETWORK_THREADS: 4
-      KAFKA_NUM_IO_THREADS: 4
-      KAFKA_BACKGROUND_THREADS: 4
+      KAFKA_NUM_NETWORK_THREADS: 2
+      KAFKA_NUM_IO_THREADS: 2
+      KAFKA_BACKGROUND_THREADS: 2
       KAFKA_HEAP_OPTS: "-Xmx512m -Xms512m"
 
   tester:
-    image: makeomatic/node:${IMAGE_TAG:-16-rdkafka-tester}
+    image: makeomatic/node:${IMAGE_TAG:-22-rdkafka-tester}
     volumes:
       - ${PWD}:/src
       - ${PWD}/ci/npmrc:/usr/local/etc/npmrc:ro
@@ -43,6 +41,7 @@ services:
     env_file:
       - .env
     environment:
+      - BUILD_LIBRDKAFKA=0
       - UV_THREADPOOL_SIZE=16
       - CI=true
       - UID=${UID:-1000}

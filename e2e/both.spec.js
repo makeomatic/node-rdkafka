@@ -7,8 +7,8 @@
  * of the MIT license.  See the LICENSE.txt file for details.
  */
 
-var crypto = require('crypto');
-var t = require('assert');
+var crypto = require('node:crypto');
+var t = require('node:assert');
 
 var Kafka = require('../');
 var kafkaBrokerList = process.env.KAFKA_HOST || 'localhost:9092';
@@ -37,6 +37,7 @@ describe('Consumer/Producer', function() {
       }
 
       if (finished === 2) {
+        called = true;
         done();
       }
     }
@@ -47,7 +48,8 @@ describe('Consumer/Producer', function() {
       'metadata.broker.list': kafkaBrokerList,
       'group.id': grp,
       'fetch.wait.max.ms': 1000,
-      'session.timeout.ms': 10000,
+      'socket.nagle.disable': true,
+      'session.timeout.ms': 20000,
       'enable.auto.commit': true,
       'enable.partition.eof': true,
       'debug': 'all'
@@ -84,7 +86,7 @@ describe('Consumer/Producer', function() {
 
   });
 
-  afterEach(function(done) {
+  afterEach('disconnect', function(done) {
     var finished = 0;
     var called = false;
 
@@ -100,6 +102,7 @@ describe('Consumer/Producer', function() {
       }
 
       if (finished === 2) {
+        called = true;
         done();
       }
     }
@@ -275,34 +278,36 @@ describe('Consumer/Producer', function() {
   it('should be able to produce and consume messages: consumeLoop', function(done) {
     var key = 'key';
 
-    crypto.randomBytes(4096, function(ex, buffer) {
+    const buffer = crypto.randomBytes(4096);
 
-      producer.setPollInterval(10);
+    producer.setPollInterval(10);
 
-      producer.once('delivery-report', function(err, report) {
-        if (!err) {
-          t.equal(topic, report.topic, 'invalid delivery-report topic');
-          t.equal(key, report.key, 'invalid delivery-report key');
-          t.ok(report.offset >= 0, 'invalid delivery-report offset');
-        }
-      });
-
-      consumer.on('data', function(message) {
-        t.equal(buffer.toString(), message.value.toString(), 'invalid message value');
-        t.equal(key, message.key, 'invalid message key');
-        t.equal(topic, message.topic, 'invalid message topic');
-        t.ok(message.offset >= 0, 'invalid message offset');
-        done();
-      });
-
-      consumer.subscribe([topic]);
-      consumer.consume();
-
-      setTimeout(function() {
-        producer.produce(topic, null, buffer, key);
-      }, 2000);
-
+    producer.once('delivery-report', function(err, report) {
+      if (!err) {
+        t.equal(topic, report.topic, 'invalid delivery-report topic');
+        t.equal(key, report.key, 'invalid delivery-report key');
+        t.ok(report.offset >= 0, 'invalid delivery-report offset');
+      } else {
+        done(err);
+      }
     });
+
+    consumer.subscribe([topic]);
+    consumer.consume(function (err, message) {
+      if (err) {
+        return done(err);
+      }
+
+      t.equal(buffer.toString(), message.value.toString(), 'invalid message value');
+      t.equal(key, message.key, 'invalid message key');
+      t.equal(topic, message.topic, 'invalid message topic');
+      t.ok(message.offset >= 0, 'invalid message offset');
+      done();
+    });
+
+    setTimeout(function() {
+      producer.produce(topic, null, buffer, key);
+    }, 2000);
   });
 
   it('should emit \'partition.eof\' events in consumeLoop', function(done) {
@@ -364,7 +369,7 @@ describe('Consumer/Producer', function() {
           done();
         });
       } else {
-        t.ifError(err);
+        done(err);
       }
     });
 
@@ -499,7 +504,8 @@ describe('Consumer/Producer', function() {
       'metadata.broker.list': kafkaBrokerList,
       'group.id': grp,
       'fetch.wait.max.ms': 1000,
-      'session.timeout.ms': 10000,
+      'socket.nagle.disable': true,
+      'session.timeout.ms': 20000,
       'enable.auto.commit': false,
       'debug': 'all',
       'offset_commit_cb': true
@@ -586,7 +592,8 @@ describe('Consumer/Producer', function() {
           'metadata.broker.list': kafkaBrokerList,
           'group.id': grp,
           'fetch.wait.max.ms': 1000,
-          'session.timeout.ms': 10000,
+          'socket.nagle.disable': true,
+          'session.timeout.ms': 20000,
           'enable.auto.commit': false,
           'debug': 'all',
           'offset_commit_cb': function(offset) {
@@ -614,6 +621,66 @@ describe('Consumer/Producer', function() {
     });
   });
 
+  describe('Cooperative sticky', function() {
+    var consumer;
+
+    beforeEach(function(done) {
+      var grp = 'kafka-mocha-grp-' + crypto.randomBytes(20).toString('hex');
+
+      var consumerOpts = {
+        'metadata.broker.list': kafkaBrokerList,
+        'group.id': grp,
+        'fetch.wait.max.ms': 1000,
+        'socket.nagle.disable': true,
+        'session.timeout.ms': 20000,
+        'enable.auto.commit': false,
+        'debug': 'all',
+        'partition.assignment.strategy': 'cooperative-sticky'
+      };
+
+      consumer = new Kafka.KafkaConsumer(consumerOpts, {
+        'auto.offset.reset': 'largest',
+      });
+
+      consumer.connect({}, function(err, d) {
+        t.ifError(err);
+        t.equal(typeof d, 'object', 'metadata should be returned');
+        done();
+      });
+
+      eventListener(consumer);
+    });
+
+    afterEach(function(done) {
+      consumer.disconnect(function() {
+        done();
+      });
+    });
+
+    it('should be able to produce and consume messages', function (done) {
+      var key = 'key';
+
+      crypto.randomBytes(4096, function(ex, buffer) {
+        producer.setPollInterval(10);
+
+        consumer.on('data', function(message) {
+          t.equal(buffer.toString(), message.value.toString(), 'invalid message value');
+          t.equal(key, message.key, 'invalid message key');
+          t.equal(topic, message.topic, 'invalid message topic');
+          t.ok(message.offset >= 0, 'invalid message offset');
+          done();
+        });
+
+        consumer.subscribe([topic]);
+        consumer.consume();
+
+        setTimeout(function() {
+          producer.produce(topic, null, buffer, key);
+        }, 2000);
+      });
+    });
+  });
+
   function assert_headers_match(expectedHeaders, messageHeaders) {
     t.equal(expectedHeaders.length, messageHeaders.length, 'Headers length does not match expected length');
     for (var i = 0; i < expectedHeaders.length; i++) {
@@ -632,36 +699,35 @@ describe('Consumer/Producer', function() {
   function run_headers_test(done, headers) {
     var key = 'key';
 
-    crypto.randomBytes(4096, function(ex, buffer) {
+    const buffer = crypto.randomBytes(4096);
 
-      producer.setPollInterval(10);
+    producer.setPollInterval(10);
 
-      producer.once('delivery-report', function(err, report) {
-        if (!err) {
-          t.equal(topic, report.topic, 'invalid delivery-report topic');
-          t.equal(key, report.key, 'invalid delivery-report key');
-          t.ok(report.offset >= 0, 'invalid delivery-report offset');
-        }
-      });
-
-      consumer.on('data', function(message) {
-        t.equal(buffer.toString(), message.value.toString(), 'invalid message value');
-        t.equal(key, message.key, 'invalid message key');
-        t.equal(topic, message.topic, 'invalid message topic');
-        t.ok(message.offset >= 0, 'invalid message offset');
-        assert_headers_match(headers, message.headers);
-        done();
-      });
-
-      consumer.subscribe([topic]);
-      consumer.consume();
-
-      setTimeout(function() {
-        var timestamp = new Date().getTime();
-        producer.produce(topic, null, buffer, key, timestamp, "", headers);
-      }, 2000);
-
+    producer.once('delivery-report', function(err, report) {
+      if (!err) {
+        t.equal(topic, report.topic, 'invalid delivery-report topic');
+        t.equal(key, report.key, 'invalid delivery-report key');
+        t.ok(report.offset >= 0, 'invalid delivery-report offset');
+      }
     });
-  }
 
+    consumer.subscribe([topic]);
+    consumer.consume(function (err, message) {
+      if (err) {
+        return done(err)
+      }
+
+      t.equal(buffer.toString(), message.value.toString(), 'invalid message value');
+      t.equal(key, message.key, 'invalid message key');
+      t.equal(topic, message.topic, 'invalid message topic');
+      t.ok(message.offset >= 0, 'invalid message offset');
+      assert_headers_match(headers, message.headers);
+      done();
+    });
+
+    setTimeout(function() {
+      var timestamp = new Date().getTime();
+      producer.produce(topic, null, buffer, key, timestamp, "", headers);
+    }, 2000);
+  }
 });

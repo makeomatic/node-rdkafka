@@ -26,8 +26,8 @@ namespace Workers {
 
 class ErrorAwareWorker : public Nan::AsyncWorker {
  public:
-  explicit ErrorAwareWorker(Nan::Callback* callback_) :
-    Nan::AsyncWorker(callback_),
+  explicit ErrorAwareWorker(Nan::Callback* callback_, const char* resource_name = "ErrorAwareWorker") :
+    Nan::AsyncWorker(callback_, resource_name),
     m_baton(RdKafka::ERR_NO_ERROR) {}
   virtual ~ErrorAwareWorker() {}
 
@@ -39,7 +39,7 @@ class ErrorAwareWorker : public Nan::AsyncWorker {
     const unsigned int argc = 1;
     v8::Local<v8::Value> argv[argc] = { Nan::Error(ErrorMessage()) };
 
-    callback->Call(argc, argv);
+    callback->Call(argc, argv, async_resource);
   }
 
  protected:
@@ -68,8 +68,8 @@ class ErrorAwareWorker : public Nan::AsyncWorker {
 
 class MessageWorker : public ErrorAwareWorker {
  public:
-  explicit MessageWorker(Nan::Callback* callback_)
-      : ErrorAwareWorker(callback_), m_asyncdata() {
+  explicit MessageWorker(Nan::Callback* callback_, const char* resource_name = "MessageWorker")
+      : ErrorAwareWorker(callback_, resource_name), m_asyncdata() {
     m_async = new uv_async_t;
     uv_async_init(
       uv_default_loop(),
@@ -81,6 +81,13 @@ class MessageWorker : public ErrorAwareWorker {
   }
 
   virtual ~MessageWorker() {
+    if (m_asyncdata.size() > 0) {
+      for (unsigned int i = 0; i < m_asyncdata.size(); i++) {
+        delete m_asyncdata[i];
+      }
+      m_asyncdata.clear();
+    }
+
     uv_mutex_destroy(&m_async_lock);
   }
 
