@@ -74,7 +74,7 @@ describe('Consumer', function() {
       eventListener(consumer);
     });
 
-    afterEach(function(done) {
+    afterEach('disconnect', function(done) {
       consumer.disconnect(function() {
         done();
       });
@@ -114,7 +114,9 @@ describe('Consumer', function() {
       consumer.assign([{topic:topic, partition:0}]);
       consumer.commitSync({topic:topic, partition:0, offset:1000});
       consumer.committed(null, 1000, function(err, committed) {
-        t.ifError(err);
+        if (err) {
+          return done(err);
+        }
         t.equal(committed.length, 1);
         t.equal(typeof committed[0], 'object', 'TopicPartition should be an object');
         t.deepStrictEqual(committed[0].partition, 0);
