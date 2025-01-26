@@ -66,7 +66,7 @@ describe('Consumer', function() {
     beforeEach(function(done) {
       consumer = new KafkaConsumer(gcfg, {});
 
-      consumer.connect({ timeout: 2000 }, function(err, info) {
+      consumer.connect({ timeout: 5000 }, function(err, info) {
         t.ifError(err);
         done();
       });

@@ -998,7 +998,7 @@ KafkaConsumerCommitted::KafkaConsumerCommitted(Nan::Callback *callback,
                                      KafkaConsumer* consumer,
                                      std::vector<RdKafka::TopicPartition*> & t,
                                      const int & timeout_ms) :
-  ErrorAwareWorker(callback),
+  ErrorAwareWorker(callback, "node-rdkafka::KafkaConsumerCommitted"),
   m_consumer(consumer),
   m_topic_partitions(t),
   m_timeout_ms(timeout_ms) {}
