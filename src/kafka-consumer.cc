@@ -74,11 +74,12 @@ Baton KafkaConsumer::Connect() {
     }
   }
 
+  RdKafka::ErrorCode err = RdKafka::ERR_NO_ERROR;
   if (m_partitions.size() > 0) {
-    m_client->resume(m_partitions);
+    err = m_client->resume(m_partitions);
   }
 
-  return Baton(RdKafka::ERR_NO_ERROR);
+  return Baton(err);
 }
 
 void KafkaConsumer::ActivateDispatchers() {
@@ -1399,6 +1400,7 @@ NAN_METHOD(KafkaConsumer::NodeDisconnect) {
     consumer->m_consume_loop = nullptr;
   }
 
+  printf("Workers::KafkaConsumerDisconnect(callback, consumer)\n");
   Nan::AsyncQueueWorker(
     new Workers::KafkaConsumerDisconnect(callback, consumer));
   info.GetReturnValue().Set(Nan::Null());

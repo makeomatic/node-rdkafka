@@ -68,8 +68,8 @@ class ErrorAwareWorker : public Nan::AsyncWorker {
 
 class MessageWorker : public ErrorAwareWorker {
  public:
-  explicit MessageWorker(Nan::Callback* callback_)
-      : ErrorAwareWorker(callback_), m_asyncdata() {
+  explicit MessageWorker(Nan::Callback* callback_, const char* resource_name = "MessageWorker")
+      : ErrorAwareWorker(callback_, resource_name), m_asyncdata() {
     m_async = new uv_async_t;
     uv_async_init(
       uv_default_loop(),
@@ -81,6 +81,13 @@ class MessageWorker : public ErrorAwareWorker {
   }
 
   virtual ~MessageWorker() {
+    if (m_asyncdata.size() > 0) {
+      for (unsigned int i = 0; i < m_asyncdata.size(); i++) {
+        delete m_asyncdata[i];
+      }
+      m_asyncdata.clear();
+    }
+
     uv_mutex_destroy(&m_async_lock);
   }
 

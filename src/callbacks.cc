@@ -100,6 +100,7 @@ void Dispatcher::Dispatch(const int _argc, Local<Value> _argv[]) {
   for (size_t i=0; i < callbacks.size(); i++) {
     v8::Local<v8::Function> f = Nan::New<v8::Function>(callbacks[i]);
     Nan::Callback cb(f);
+    // Nan::Call(cb, _argc, _argv);
     cb.Call(_argc, _argv);
   }
 }

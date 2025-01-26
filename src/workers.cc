@@ -601,7 +601,7 @@ void KafkaConsumerConnect::HandleErrorCallback() {
 
 KafkaConsumerDisconnect::KafkaConsumerDisconnect(Nan::Callback *callback,
   KafkaConsumer* consumer):
-  ErrorAwareWorker(callback),
+  ErrorAwareWorker(callback, "KafkaConsumerDisconnectWorker"),
   consumer(consumer) {}
 
 KafkaConsumerDisconnect::~KafkaConsumerDisconnect() {}
@@ -661,11 +661,11 @@ KafkaConsumerConsumeLoop::KafkaConsumerConsumeLoop(Nan::Callback *callback,
                                      KafkaConsumer* consumer,
                                      const int & timeout_ms,
                                      const int & timeout_sleep_delay_ms) :
-  MessageWorker(callback),
+  MessageWorker(callback, "KafkaConsumerConsumeLoop"),
   consumer(consumer),
-  m_looping(true),
   m_timeout_ms(timeout_ms),
-  m_timeout_sleep_delay_ms(timeout_sleep_delay_ms) {
+  m_timeout_sleep_delay_ms(timeout_sleep_delay_ms),
+  m_looping(true) {
   uv_thread_create(&thread_event_loop, KafkaConsumerConsumeLoop::ConsumeLoop, (void*)this);
 }
 
